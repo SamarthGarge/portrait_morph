@@ -2,10 +2,13 @@
 
 [![pub package](https://img.shields.io/pub/v/portrait_morph.svg)](https://pub.dev/packages/portrait_morph)
 [![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+[![Live Demo](https://img.shields.io/badge/demo-live_preview-success.svg)](https://samarthgarge.github.io/portrait_morph/)
 
 A pointer-driven image morph effect for Flutter, powered by a custom
 `dart:ui` fragment shader. Morphs between two images with an fbm-noise
 wipe, edge ripple, and spring-eased transitions.
+
+🎮 **[Try the Live Web Demo](https://samarthgarge.github.io/portrait_morph/)**
 
 ## Features
 
@@ -99,7 +102,7 @@ PortraitMorph(
   fills its parent.
 - Network images served from another origin need **CORS headers** on web.
 
-See [`example/`](example/) for a complete runnable demo.
+Check out the **[Live Demo](https://samarthgarge.github.io/portrait_morph/)** or browse [`example/`](example/) for the complete runnable demo source code.
 
 ## How it works
 
