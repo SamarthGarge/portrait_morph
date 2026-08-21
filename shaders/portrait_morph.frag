@@ -1,5 +1,4 @@
-#version 460 core
-precision highp float;
+#include <flutter/runtime_effect.glsl>
 
 // Uniform order is load-bearing: Dart sets these by flat float index via
 // FragmentShader.setFloat(0..9), in exactly this declaration order.
@@ -55,10 +54,7 @@ float fbm(vec2 p) {
 }
 
 void main() {
-  // FlutterFragCoord() origin is top-left; the original web canvas UV is
-  // bottom-up, so flip Y to match the ported direction/origin math.
   vec2 uv = FlutterFragCoord().xy / uResolution;
-  uv.y = 1.0 - uv.y;
 
   float p = uProgress;
   float bell = 4.0 * p * (1.0 - p);
@@ -85,8 +81,9 @@ void main() {
   float pushAmount = ripple * edgeBand * 0.025 * bell;
   vec2 pushUv = uv + perp * pushAmount;
 
-  vec4 texA = texture(uTexA, coverUv(pushUv));
-  vec4 texB = texture(uTexB, coverUv(pushUv));
+  vec2 sampleUv = coverUv(pushUv);
+  vec4 texA = texture(uTexA, sampleUv);
+  vec4 texB = texture(uTexB, sampleUv);
 
   vec4 color = mix(texA, texB, mask);
   color.rgb *= 1.0 - (edgeBand * 0.35 * bell);
