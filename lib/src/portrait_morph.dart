@@ -19,8 +19,7 @@ import 'shader_loader.dart';
 ///   since there is no hover concept — release to reverse the morph.
 ///
 /// Give this widget a bounded size (e.g. wrap it in an [AspectRatio] or a
-/// fixed-size [SizedBox]) — same aspect ratio for both images works best,
-/// matching the original component.
+/// fixed-size [SizedBox]) — same aspect ratio for both images works best.
 class PortraitMorph extends StatefulWidget {
   const PortraitMorph({
     super.key,
@@ -36,7 +35,7 @@ class PortraitMorph extends StatefulWidget {
   /// The image morphed into on hover/press.
   final ImageProvider imageB;
 
-  /// Accessibility label, matches the `alt` text on the original component.
+  /// Accessibility label for the morph widget.
   final String alt;
 
   /// How the static fallback image is fit while the shader/textures are
@@ -86,7 +85,8 @@ class _PortraitMorphState extends State<PortraitMorph>
   @override
   void didUpdateWidget(covariant PortraitMorph oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.imageA != widget.imageA || oldWidget.imageB != widget.imageB) {
+    if (oldWidget.imageA != widget.imageA ||
+        oldWidget.imageB != widget.imageB) {
       _imageA = null;
       _imageB = null;
       _failed = false;
@@ -158,8 +158,10 @@ class _PortraitMorphState extends State<PortraitMorph>
     final double dxRight = 1 - x;
     final double dyBottom = y;
     final double dyTop = 1 - y;
-    final double minDist =
-        math.min(math.min(dxLeft, dxRight), math.min(dyBottom, dyTop));
+    final double minDist = math.min(
+      math.min(dxLeft, dxRight),
+      math.min(dyBottom, dyTop),
+    );
     if (minDist == dxLeft) return const Offset(1, 0);
     if (minDist == dxRight) return const Offset(-1, 0);
     if (minDist == dyBottom) return const Offset(0, 1);

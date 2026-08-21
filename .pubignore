@@ -1,0 +1,4 @@
+# Exclude large example assets from the published package.
+# The example code is included, but the asset images are not — users can
+# substitute their own images.
+example/assets/

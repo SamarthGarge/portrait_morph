@@ -1,11 +1,19 @@
 name: portrait_morph
-description: >
-  A pointer-driven portrait morph effect using a custom dart:ui fragment
-  shader — edge ripple, fbm-noise wipe, and spring-eased transitions between
-  two images. Ported from a WebGL/OGL component. Works on mobile, web, and
-  desktop.
+description: >-
+  A pointer-driven image morph effect using a custom dart:ui fragment shader.
+  Features fbm-noise wipe, edge ripple, and spring-eased transitions between
+  two images. Supports hover (desktop/web) and press+drag (mobile).
 version: 1.0.0
 homepage: https://github.com/SamarthGarge/portrait_morph
+repository: https://github.com/SamarthGarge/portrait_morph
+issue_tracker: https://github.com/SamarthGarge/portrait_morph/issues
+
+topics:
+  - ui
+  - animation
+  - shader
+  - widget
+  - effects
 
 environment:
   sdk: ^3.10.1

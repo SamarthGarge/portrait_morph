@@ -11,10 +11,7 @@ import 'package:flutter/widgets.dart';
 /// widgets across mobile, web, and desktop, including caching and retry
 /// semantics for [NetworkImage].
 
-Future<ui.Image> resolveUiImage(
-  ImageProvider provider,
-  BuildContext context,
-) {
+Future<ui.Image> resolveUiImage(ImageProvider provider, BuildContext context) {
   final Completer<ui.Image> completer = Completer<ui.Image>();
   final ImageConfiguration config = createLocalImageConfiguration(context);
   final ImageStream stream = provider.resolve(config);
@@ -36,4 +33,3 @@ Future<ui.Image> resolveUiImage(
   stream.addListener(listener);
   return completer.future;
 }
-

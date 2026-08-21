@@ -1,37 +1,59 @@
 # portrait_morph
 
+[![pub package](https://img.shields.io/pub/v/portrait_morph.svg)](https://pub.dev/packages/portrait_morph)
+[![License: BSD-3-Clause](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
+
 A pointer-driven image morph effect for Flutter, powered by a custom
 `dart:ui` fragment shader. Morphs between two images with an fbm-noise
 wipe, edge ripple, and spring-eased transitions.
 
-- Custom GLSL wipe with fbm noise and edge ripple, running as a real GPU
-  fragment shader (not a `ShaderMask`/blend approximation)
-- Transition origin and direction follow pointer entry
-- Spring-eased progress (no linear snapping)
-- Static fallback image while textures/shader are loading
-- **Mobile:** press + drag drives the effect (no hover on touch)
-- **Web / desktop:** hover drives the effect
+## Features
+
+- **GPU-powered morph** — Custom GLSL wipe with fbm noise and edge ripple,
+  running as a real GPU fragment shader (not a `ShaderMask`/blend approximation)
+- **Pointer-aware** — Transition origin and direction follow pointer entry
+- **Spring-eased** — Smooth spring-interpolated progress (no linear snapping)
+- **Graceful fallback** — Static fallback image while textures/shader are loading
+- **Cross-input** — Hover on desktop/web, press + drag on mobile/touch
+- **Cross-platform** — Android, iOS, Web, macOS, Windows, and Linux
 
 ## Platform support
 
 | Platform | Support | Notes |
 |---|---|---|
 | Android / iOS | ✅ | Uses Impeller (or Skia) fragment shaders — ships with modern Flutter by default |
-| Web | ✅ | Requires the **CanvasKit or Skwasm** renderer (Flutter's default web renderer). The legacy HTML renderer does **not** support fragment shaders — if you've forced `--web-renderer html`, remove that flag |
+| Web | ✅ | Requires the **CanvasKit or Skwasm** renderer (Flutter's default). The legacy HTML renderer does **not** support fragment shaders |
 | macOS / Windows / Linux | ✅ | Same `dart:ui` fragment shader path as mobile |
 
 If the shader fails to compile or an image fails to load on any platform
-(e.g. an unsupported backend, or a bad `NetworkImage` URL), the widget falls
-back to a static rendering of `imageA` instead of throwing.
+(e.g. an unsupported backend, or a bad `NetworkImage` URL), the widget
+gracefully falls back to a static rendering of `imageA` instead of throwing.
 
-## Install
+## Getting started
+
+### Installation
+
+Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  portrait_morph: ^0.1.0
+  portrait_morph: ^1.0.0
 ```
 
+Then run:
+
+```bash
+flutter pub get
+```
+
+### Prerequisites
+
+- Flutter SDK `>=3.10.1`
+- No additional native dependencies required
+
 ## Usage
+
+### Basic example
 
 ```dart
 import 'package:portrait_morph/portrait_morph.dart';
@@ -49,14 +71,35 @@ AspectRatio(
 )
 ```
 
-`imageA`/`imageB` accept any `ImageProvider` — `AssetImage`, `NetworkImage`,
-`MemoryImage`, `FileImage` (not on web), etc. Same aspect ratio for both
-images works best. Give the widget a bounded size (`AspectRatio`,
-`SizedBox`, etc.) — it fills its parent.
+### Using network images
 
-Network images served from another origin need CORS headers on web.
+```dart
+PortraitMorph(
+  imageA: NetworkImage('https://example.com/photo-a.jpg'),
+  imageB: NetworkImage('https://example.com/photo-b.jpg'),
+  alt: 'Photo morph',
+)
+```
 
-See `example/` for a runnable demo.
+### Parameters
+
+| Parameter | Type | Required | Description |
+|---|---|---|---|
+| `imageA` | `ImageProvider` | ✅ | The image shown at rest / before interaction |
+| `imageB` | `ImageProvider` | ✅ | The image morphed into on hover/press |
+| `alt` | `String` | ✅ | Accessibility label for the morph widget |
+| `fallbackFit` | `BoxFit` | ❌ | How the static fallback image is fit while loading (defaults to `BoxFit.cover`) |
+
+### Tips
+
+- `imageA`/`imageB` accept any `ImageProvider` — `AssetImage`, `NetworkImage`,
+  `MemoryImage`, `FileImage` (not on web), etc.
+- **Same aspect ratio** for both images works best.
+- Give the widget a **bounded size** (`AspectRatio`, `SizedBox`, etc.) — it
+  fills its parent.
+- Network images served from another origin need **CORS headers** on web.
+
+See [`example/`](example/) for a complete runnable demo.
 
 ## How it works
 
@@ -74,7 +117,7 @@ entry/exit/move for mouse input (desktop, web), while a `Listener` handles
 press/drag/release for touch and stylus input, so the same effect works
 naturally on both interaction models without double-triggering.
 
-## Limitations
+## Known limitations
 
 - No automatic pause-when-off-screen — the ticker only pauses on app
   background/foreground (`AppLifecycleState`). Wrap in `VisibilityDetector`
@@ -82,3 +125,13 @@ naturally on both interaction models without double-triggering.
 - `dispose()` frees the decoded `ui.Image`s; if you rebuild this widget
   very frequently with new `ImageProvider`s (e.g. inside a fast-scrolling
   list), prefer stable/cached providers to avoid repeated decodes.
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request on
+[GitHub](https://github.com/SamarthGarge/portrait_morph).
+
+## License
+
+This project is licensed under the BSD 3-Clause License — see the
+[LICENSE](LICENSE) file for details.
